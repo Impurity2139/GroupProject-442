@@ -1,5 +1,3 @@
-# GroupProject-442
-You guys can edit this
 # Document-based Phishing Canary (GroupProject-442)
 
 ## Overview
