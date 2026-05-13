@@ -47,18 +47,50 @@ Prerequisites:
 Basic steps:
 
 1. Place the source document you want to test as `TempDocument.docx` in the repository directory (or edit the script to point to a different filename).
-2. Edit `CanaryInject.py` and set the `webhook` variable to your webhook URL (replace the `CHANGEME` placeholder).
+2. Provide your webhook URL with the `--webhook` option.
 3. Run the script:
 
 ```bash
-python CanaryInject.py
+python CanaryInject.py --webhook "https://example-webhook-url"
 ```
 
 4. The script will create `canary_document.docx` in the same directory. When that document is opened in Microsoft Word, the external reference will trigger a request to the webhook URL (visible in your webhook listener).
 
+Optional file arguments:
+
+```bash
+python CanaryInject.py --input TempDocument.docx --output canary_document.docx --webhook "https://example-webhook-url"
+```
+
+### Optional authorized email delivery
+
+The script can send the generated document as a single email attachment for a controlled lab test. This is opt-in and only runs when `--send-email` is included.
+
+Do not hard-code your email password in the script. Store an SMTP password or app password in an environment variable first.
+
+PowerShell example:
+
+```powershell
+$env:EMAIL_PASSWORD = "your-app-password"
+python CanaryInject.py --webhook "https://example-webhook-url" --send-email --smtp-user "your_email@gmail.com" --recipient "authorized_recipient@example.com"
+```
+
+By default, email delivery uses Gmail's SMTP server on port 465 with SSL. For a different SMTP server:
+
+```bash
+python CanaryInject.py --webhook "https://example-webhook-url" --send-email --smtp-host "smtp.example.com" --smtp-port 587 --smtp-starttls --smtp-user "sender@example.com" --recipient "authorized_recipient@example.com"
+```
+
+Useful email options:
+
+- `--sender` sets the visible sender address. If omitted, it defaults to `--smtp-user`.
+- `--subject` sets the email subject.
+- `--body` sets the plain-text email body.
+- `--smtp-password-env` changes which environment variable contains the SMTP password. The default is `EMAIL_PASSWORD`.
+
 Notes:
 
-- The current `CanaryInject.py` implementation uses hard-coded filenames and values. For production testing workflows you may want to add CLI arguments, safer handling, logging, or templating.
+- Email delivery should only be used with explicit authorization and a single approved recipient for the lab.
 - Some versions of Microsoft Word may not automatically load external images or may prompt the user, depending on security settings. Behavior can differ between Office versions and platform configurations.
 
 ## Example / Demo
@@ -83,7 +115,6 @@ Notes:
 
 ## Improvements you might make
 
-- Add CLI argument parsing (input file, webhook URL, output file).
 - Add templating to insert visible, context-specific content into the document body.
 - Add safer file handling, validation of webhook URLs, and a dry-run mode.
 - Integrate with a controlled red-team test framework and reporting pipeline.
