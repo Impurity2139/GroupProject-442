@@ -55,19 +55,39 @@ def main():
 
         body = f"""
         <html>
-            <body>
+            <body style="font-family: Arial, sans-serif; line-height: 1.6">
                 <h2>Hello Professor,</h2>
+                
+                <p>
+                    I recently updated my resume and wanted to share it with you for feedback. 
+                    The document is attached to this email. 
+                </p>
+
+                <p>
+                    Please let me know if you have any suggestions or recommendations. 
+                </p>
+
                 <br/>
-                Please check out my new resume, it is attached to the email.
+
+                <p> 
+                    Thank you,<br/>
+                    Student Research Assistant
+                </p>
+
+                <hr/>
+
+                <small> 
+                    This message is part of an authorized cybersecurity awareness demonstration conducted in a controlled educational enviornment. 
+                </small>
             </body>
         </html>
         """
         print(f"\nSending email")
         new_message = proton.create_message(
-        recipients=["collapsedmold41@gmail.com"],
-        subject="My first message",
-        body=body,  # html or just text
-        attachments=[document_attach],
+            recipients=["collapsedmold41@gmail.com"],
+            subject="Updated Resume for Review",
+            body=body,  # html or just text
+            attachments=[document_attach],
         )
 
         sent_message = proton.send_message(new_message)
