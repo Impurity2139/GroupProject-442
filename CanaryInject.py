@@ -2,14 +2,24 @@ import zipfile
 import os
 import shutil
 from pathlib import Path
+from protonmail import ProtonMail
+from dotenv import load_dotenv
+
+
 
 def main():
     docx_file = "TempDocument.docx"
     webhook = "CHANGEME"
     output_path = f"canary_document.docx"
     extract_dir = "doc_temp_extract"
-    
+    load_dotenv(override=True)
+
+    USERNAME = os.getenv('USERNAME')
+    PASSWORD = os.getenv('PASSWORD')
+    proton = ProtonMail()
+    proton.login(USERNAME, PASSWORD)
     try:
+        webhook = input("[+] Give the webhook here: ")
         with zipfile.ZipFile(docx_file, 'r') as zip_ref:
             zip_ref.extractall(extract_dir)
         
@@ -39,6 +49,28 @@ def main():
         
         print(f"\nCanary token document created: {output_path}")
         print(f"Webhook URL: {webhook}")
+
+        with open('canary_document.docx','rb') as f: doc = f.read()
+        document_attach = proton.create_attachment(content=doc, name="canary_document.docx")
+
+        body = f"""
+        <html>
+            <body>
+                <h2>Hello Professor,</h2>
+                <br/>
+                Please check out my new resume, it is attached to the email.
+            </body>
+        </html>
+        """
+        print(f"\nSending email")
+        new_message = proton.create_message(
+        recipients=["collapsedmold41@gmail.com"],
+        subject="My first message",
+        body=body,  # html or just text
+        attachments=[document_attach],
+        )
+
+        sent_message = proton.send_message(new_message)
         
         return True
         
