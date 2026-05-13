@@ -1,5 +1,6 @@
 # Document-based Phishing Canary (GroupProject-442)
 
+
 ## Overview
 
 This repository contains a demonstration tool that injects an external reference into a Microsoft Word document (.docx) so that opening the document triggers an external request (a "canary" webhook). The demonstration shows how document-based phishing or reconnaissance techniques can silently signal when a file is opened. The purpose of this project is academic and defensive: to help researchers and security teams understand the risks, detection challenges, and mitigation strategies related to document-based callbacks.
@@ -23,7 +24,8 @@ This tool is dual-use. It can be used for legitimate security research, red-team
 
 This project exists to inform defenders and researchers about modern phishing techniques and to help design better human-risk assessments.
 
-## How it works (technical summary)
+
+## How it works [technical summary]
 
 1. A `.docx` file is unpacked into a temporary folder.
 2. `word/footer1.xml` is overwritten (or created) with an XML footer containing a Word field using `INCLUDEPICTURE "<webhook_url>" \d` so Word will load the external resource.
@@ -81,7 +83,7 @@ Notes:
 - Use network monitoring and egress filtering to block or log requests to unknown external endpoints.
 - Teach users to verify unexpected attachments and to report suspicious messages quickly.
 
-## Improvements you might make
+## Improvements you might make 
 
 - Add CLI argument parsing (input file, webhook URL, output file).
 - Add templating to insert visible, context-specific content into the document body.
