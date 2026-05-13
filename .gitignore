@@ -1,0 +1,39 @@
+# Python bytecode and cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python build and packaging output
+build/
+dist/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Generated lab artifacts
+canary_document.docx
+*_canary.docx
+
+# Temporary document extraction output
+doc_temp_extract/
+
+# Logs and temporary files
+*.log
+tmp/
+temp/
+output/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
